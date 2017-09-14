@@ -1,3 +1,6 @@
+#host
+api_host: :8199
+
 #uchat config
 merchant_no: xxxxxxxxx
 merchant_secret: xxxx
@@ -9,3 +12,37 @@ rabbitmq_user: uchat
 rabbitmq_passwd: uchat
 rabbitmq_vhost: uchat
 rabbitmq_receive_exchange_name: uchat_receive
+
+# key: queue name
+# value: binding key list
+receive_queue_config: 
+    uchat.member.list:           [ uchat.member.list ]
+    uchat.member.join:           [ uchat.member.join ]
+    uchat.member.quit:           [ uchat.member.quit ] 
+    uchat.member.message_sum:    [ uchat.member.message.sum ]
+    uchat.chat.create:           [ uchat.chat.create ]
+    uchat.chat.message:          [ uchat.chat.message ] 
+    uchat.chat.keyword:          [ uchat.chat.keywork ]
+    uchat.chat.redpack:          [ uchat.chat.redpack ]
+    uchat.robot.chat.list:       [ uchat.robot.chat.list ]
+    uchat.robot.chat.join:       [ uchat.robot.chat.join ] 
+    uchat.robot.message.private: [ uchat.robot.message.private ]
+    uchat.robot.deny:            [ uchat.robot.deny ]
+    uchat.send.messages.error:   [ uchat.send.messages.error ]
+
+# Key: uchat 小U后台配置?act=xxxx，xxxx内容可以根据喜好自定义
+# Val: rabbitmq routing key，可以根据实际情况定义
+receive_action_config: 
+    member_info:    uchat.member.list           #用户列表
+    member_new:     uchat.member.join           #用户入群
+    member_quit:    uchat.member.quit           #用户退群
+    saysum:         uchat.member.message.sum    #表户发言总数
+    keyword:        uchat.chat.keyword          #群关键字 
+    group_new:      uchat.chat.create           #建群
+    group_msg:      uchat.chat.message          #群聊天记录
+    readpack:       uchat.chat.redpack          #群红包记录
+    robot_roomlist: uchat.robot.chat.list       #用设备所开群列
+    robot_ingroup:  uchat.robot.chat.join       #设备入群通知
+    msg:            uchat.robot.message.private #设备私聊
+    robot_deny:     uchat.robot.deny            #设备封号
+    send_msg_error: uchat.send.messages.error    #消息发送失败回调
