@@ -27,6 +27,7 @@ import (
 	"strings"
 
 	"github.com/labstack/echo"
+	"github.com/labstack/gommon/log"
 	"github.com/lvzhihao/goutils"
 	uchat2mq "github.com/lvzhihao/uchat2mq/libs"
 	"github.com/lvzhihao/uchatlib"
@@ -41,9 +42,14 @@ var receiveCmd = &cobra.Command{
 	Short: "uchat2mq http port",
 	Long:  `uchat2mq http port`,
 	Run: func(cmd *cobra.Command, args []string) {
+		// echo framework
+		app := goutils.NewEcho()
+
+		// zap logger
 		var logger *zap.Logger
 		if os.Getenv("DEBUG") == "true" {
 			logger, _ = zap.NewDevelopment()
+			app.Logger.SetLevel(log.DEBUG)
 		} else {
 			logger, _ = zap.NewProduction()
 		}
@@ -73,7 +79,6 @@ var receiveCmd = &cobra.Command{
 		uchat2mq.Logger = logger
 
 		// port
-		app := goutils.NewEcho()
 		app.Any("/*", func(ctx echo.Context) error {
 			act := ctx.QueryParam("act")
 			if mqRoute, ok := receiveActionConfig[act]; ok {
