@@ -1,0 +1,11 @@
+#uchat config
+merchant_no: xxxxxxxxx
+merchant_secret: xxxx
+
+#mq config
+rabbitmq_host: 10.10.10.10:5672
+rabbitmq_api: http://xx.xxx.xx/api
+rabbitmq_user: uchat
+rabbitmq_passwd: uchat
+rabbitmq_vhost: uchat
+rabbitmq_receive_exchange_name: uchat_receive
