@@ -1,0 +1,10 @@
+version: '2'
+services:
+  uchat2mq:
+    image: uhub.service.ucloud.cn/mmzs/uchat2mq:latest
+    volumes:
+      - ./.uchat2mq.yaml:/go/src/github.com/lvzhihao/uchat2mq/.uchat2mq.yaml
+    environment:
+      - DEBUG=false
+    ports:
+      - 8199:8800 
