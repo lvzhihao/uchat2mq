@@ -35,5 +35,5 @@ sudo docker-compose logs -ft
 ```
 
 ## env
- *TZ default: Asia/Shanghai
- *DEBUG default false
+ * TZ default: Asia/Shanghai
+ * DEBUG default false
