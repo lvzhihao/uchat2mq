@@ -1,7 +1,7 @@
 version: '3'
 services:
   uchat2mq:
-    image: uhub.service.ucloud.cn/mmzs/uchat2mq:latest
+    image: edwinlll/uchat2mq:latest
     restart: always
     environment:
       - TZ=Asia/Shanghai
