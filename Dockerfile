@@ -1,4 +1,4 @@
-FROM golang:1.9
+FROM golang:1.9.1
 
 COPY . /go/src/github.com/lvzhihao/uchat2mq 
 
