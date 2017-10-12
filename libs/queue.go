@@ -6,6 +6,27 @@ import (
 	"net/http"
 )
 
+func CreateExchange(api, user, passwd, vhost, exchange string) error {
+	client := &http.Client{}
+	b := bytes.NewBufferString(`{"type":"topic","auto_delete":false,"durable":true,"internal":false,"arguments":[]}`)
+	req, err := http.NewRequest("PUT", fmt.Sprintf("%s/exchanges/%s/%s", api, vhost, exchange), b)
+	if err != nil {
+		return err
+	}
+	// enusre exchange
+	req.SetBasicAuth(user, passwd)
+	req.Header.Add("Content-Type", "application/json")
+	resp, err := client.Do(req)
+	if err != nil {
+		return err
+	}
+	if (resp.StatusCode == http.StatusNoContent) || (resp.StatusCode == http.StatusCreated) {
+		return nil
+	} else {
+		return fmt.Errorf("CreateExchange StatusError: %d, %v", resp.StatusCode, resp)
+	}
+}
+
 func CreateQueue(api, user, passwd, vhost, name string) error {
 	client := &http.Client{}
 	b := bytes.NewBufferString(`{"auto_delete":false, "durable":true, "arguments":[]}`)
@@ -20,10 +41,11 @@ func CreateQueue(api, user, passwd, vhost, name string) error {
 	if err != nil {
 		return err
 	}
-	if resp.StatusCode != http.StatusNoContent {
+	if (resp.StatusCode == http.StatusNoContent) || (resp.StatusCode == http.StatusCreated) {
+		return nil
+	} else {
 		return fmt.Errorf("CreateQueue StatusError: %d, %v", resp.StatusCode, resp)
 	}
-	return nil
 }
 
 func BindRoutingKey(api, user, passwd, vhost, name, exchange, key string) error {
@@ -40,10 +62,11 @@ func BindRoutingKey(api, user, passwd, vhost, name, exchange, key string) error 
 	if err != nil {
 		return err
 	}
-	if resp.StatusCode != http.StatusCreated {
+	if (resp.StatusCode == http.StatusNoContent) || (resp.StatusCode == http.StatusCreated) {
+		return nil
+	} else {
 		return fmt.Errorf("BindRoutingKey StatusError: %d, %v", resp.StatusCode, resp)
 	}
-	return nil
 }
 
 func RegisterQueue(api, user, passwd, vhost, name, exchange string, keys []string) error {

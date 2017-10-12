@@ -49,11 +49,29 @@ var migrateCmd = &cobra.Command{
 		receiveQueueConfig := viper.GetStringMapStringSlice("receive_queue_config")
 		logger.Debug("receive queue config", zap.Any("data", receiveQueueConfig))
 
+		// ensure exchange
+		migrateExchange(viper.GetString("rabbitmq_receive_exchange_name"))
+
 		// receive queue migrate
 		for k, v := range receiveQueueConfig {
 			migrateQueue(k, viper.GetString("rabbitmq_receive_exchange_name"), v)
 		}
 	},
+}
+
+func migrateExchange(exchange string) {
+	rmqApi := viper.GetString("rabbitmq_api")
+	rmqUser := viper.GetString("rabbitmq_user")
+	rmqPasswd := viper.GetString("rabbitmq_passwd")
+	rmqVhost := viper.GetString("rabbitmq_vhost")
+	err := uchat2mq.CreateExchange(
+		rmqApi, rmqUser, rmqPasswd, rmqVhost, exchange,
+	)
+	if err != nil {
+		log.Fatal(err)
+	} else {
+		log.Printf("exchange create success: %s\n", exchange)
+	}
 }
 
 func migrateQueue(name, exchange string, key []string) {
