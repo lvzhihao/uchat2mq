@@ -9,8 +9,8 @@ services:
     volumes:
       - ./.uchat2mq.yaml:/go/src/github.com/lvzhihao/uchat2mq/.uchat2mq.yaml
     command: >
-      sh -c "ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && 
-      echo $TZ > /etc/timezone &&
+      sh -c "ln -snf /usr/share/zoneinfo/$${TZ} /etc/localtime && 
+      echo $${TZ} > /etc/timezone &&
       go-wrapper run receive"
     expose:
       - 8800
