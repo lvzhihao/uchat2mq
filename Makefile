@@ -14,3 +14,7 @@ docker-build:
 
 docker-push:
 	sudo docker push edwinlll/uchat2mq:latest
+
+docker-ccr:
+	sudo docker tag edwinlll/uchat2mq:latest ccr.ccs.tencentyun.com/wdwd/uchat2mq
+	sudo docker push ccr.ccs.tencentyun.com/wdwd/uchat2mq
