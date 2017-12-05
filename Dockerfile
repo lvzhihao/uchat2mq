@@ -4,7 +4,7 @@ WORKDIR /go/src/github.com/lvzhihao/uchat2mq
 
 COPY . . 
 
-RUN rm -f .uchat2mq.yaml
-RUN go-wrapper install
+RUN go-wrapper install && \
+    rm -rf *
 
 CMD ["go-wrapper", "run", "receive"]
