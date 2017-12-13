@@ -21,18 +21,19 @@
 package cmd
 
 import (
-	"fmt"
 	"net/http"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/labstack/echo"
 	"github.com/labstack/gommon/log"
+	rmqtool "github.com/lvzhihao/go-rmqtool"
 	"github.com/lvzhihao/goutils"
-	uchat2mq "github.com/lvzhihao/uchat2mq/libs"
 	"github.com/lvzhihao/uchatlib"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"github.com/streadway/amqp"
 	"go.uber.org/zap"
 )
 
@@ -66,25 +67,30 @@ var receiveCmd = &cobra.Command{
 		for _, route := range receiveActionConfig {
 			routeKeys = append(routeKeys, route)
 		}
-		tool, err := uchat2mq.NewTool(
-			fmt.Sprintf("amqp://%s:%s@%s/%s", viper.GetString("rabbitmq_user"), viper.GetString("rabbitmq_passwd"), viper.GetString("rabbitmq_host"), viper.GetString("rabbitmq_vhost")),
-			viper.GetString("rabbitmq_receive_exchange_name"),
-			routeKeys,
-		)
+
+		var config rmqtool.ConnectConfig
+		err := viper.UnmarshalKey("receive_rabbitmq", &config)
+		if err != nil {
+			log.Fatal(err)
+		}
+		tool, err := rmqtool.NewConnect(config).ApplyPublisher(viper.GetString("receive_exchange_name"), routeKeys)
 		if err != nil {
 			logger.Error("RabbitMQ Connect Error", zap.Error(err))
 		}
-
-		// uchat2mq logger
-		uchat2mq.Logger = logger
 
 		// port
 		app.Any("/*", func(ctx echo.Context) error {
 			act := ctx.QueryParam("act")
 			if mqRoute, ok := receiveActionConfig[act]; ok {
 				str := ctx.FormValue("strContext")
+				logger.Debug(str)
 				if strings.Compare(client.Sign(str), ctx.FormValue("strSign")) == 0 {
-					tool.Publish(mqRoute, str)
+					tool.Publish(mqRoute, amqp.Publishing{
+						DeliveryMode: amqp.Persistent,
+						Timestamp:    time.Now(),
+						ContentType:  "application/json",
+						Body:         []byte(str),
+					})
 					logger.Debug("Receive Message", zap.String("route", mqRoute), zap.String("message", str))
 				} else {
 					logger.Error("Error sign", zap.String("strSign", ctx.FormValue("strSign")), zap.String("checkSign", client.Sign(str)))

@@ -23,9 +23,8 @@ package cmd
 import (
 	"log"
 	"os"
-	"strings"
 
-	uchat2mq "github.com/lvzhihao/uchat2mq/libs"
+	rmqtool "github.com/lvzhihao/go-rmqtool"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
@@ -45,49 +44,20 @@ var migrateCmd = &cobra.Command{
 		}
 		defer logger.Sync()
 
-		// queue config
-		receiveQueueConfig := viper.GetStringMapStringSlice("receive_queue_config")
-		logger.Debug("receive queue config", zap.Any("data", receiveQueueConfig))
+		var config rmqtool.ConnectConfig
+		err := viper.UnmarshalKey("receive_rabbitmq", &config)
+		if err != nil {
+			log.Fatal(err)
+		}
+		inst := rmqtool.NewConnect(config)
 
-		// ensure exchange
-		migrateExchange(viper.GetString("rabbitmq_receive_exchange_name"))
-
-		// receive queue migrate
-		for k, v := range receiveQueueConfig {
-			migrateQueue(k, viper.GetString("rabbitmq_receive_exchange_name"), v)
+		err = inst.QuickCreateExchange(viper.GetString("receive_exchange_name"), "topic", true)
+		if err != nil {
+			log.Fatal(err)
+		} else {
+			log.Printf("exchange create success: %s\n", viper.GetString("receive_exchange_name"))
 		}
 	},
-}
-
-func migrateExchange(exchange string) {
-	rmqApi := viper.GetString("rabbitmq_api")
-	rmqUser := viper.GetString("rabbitmq_user")
-	rmqPasswd := viper.GetString("rabbitmq_passwd")
-	rmqVhost := viper.GetString("rabbitmq_vhost")
-	err := uchat2mq.CreateExchange(
-		rmqApi, rmqUser, rmqPasswd, rmqVhost, exchange,
-	)
-	if err != nil {
-		log.Fatal(err)
-	} else {
-		log.Printf("exchange create success: %s\n", exchange)
-	}
-}
-
-func migrateQueue(name, exchange string, key []string) {
-	rmqApi := viper.GetString("rabbitmq_api")
-	rmqUser := viper.GetString("rabbitmq_user")
-	rmqPasswd := viper.GetString("rabbitmq_passwd")
-	rmqVhost := viper.GetString("rabbitmq_vhost")
-	err := uchat2mq.RegisterQueue(
-		rmqApi, rmqUser, rmqPasswd, rmqVhost,
-		name, exchange, key,
-	)
-	if err != nil {
-		log.Fatal(err)
-	} else {
-		log.Printf("queue create success: %s bind %s %s\n", name, exchange, strings.Join(key, ","))
-	}
 }
 
 func init() {

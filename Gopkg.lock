@@ -4,8 +4,8 @@
 [[projects]]
   name = "github.com/dgrijalva/jwt-go"
   packages = ["."]
-  revision = "d2709f9f1f31ebcda9651b03077758c1f3a0018c"
-  version = "v3.0.0"
+  revision = "dbeaa9332f19a944acb5736b4456cfcc02140e29"
+  version = "v3.1.0"
 
 [[projects]]
   name = "github.com/fsnotify/fsnotify"
@@ -15,15 +15,9 @@
 
 [[projects]]
   branch = "master"
-  name = "github.com/golang/protobuf"
-  packages = ["proto"]
-  revision = "17ce1425424ab154092bbb43af630bd647f3bb0d"
-
-[[projects]]
-  branch = "master"
   name = "github.com/hashicorp/hcl"
   packages = [".","hcl/ast","hcl/parser","hcl/scanner","hcl/strconv","hcl/token","json/parser","json/scanner","json/token"]
-  revision = "8f6b1344a92ff8877cf24a5de9177bf7d0a2a187"
+  revision = "23c074d0eceb2b8a5bfdbb271ab780cde70f05a8"
 
 [[projects]]
   name = "github.com/inconshreveable/mousetrap"
@@ -34,26 +28,32 @@
 [[projects]]
   name = "github.com/labstack/echo"
   packages = [".","middleware"]
-  revision = "cec7629194fe4bf83b0c72d9a02d340c7a1468ac"
-  version = "3.2.3"
+  revision = "0473c51f1dbd83487effce00702571d19033a6e5"
+  version = "3.2.5"
 
 [[projects]]
   name = "github.com/labstack/gommon"
   packages = ["bytes","color","log","random"]
-  revision = "779b8a8b9850a97acba6a3fe20feb628c39e17c1"
-  version = "0.2.2"
+  revision = "57409ada9da0f2afad6664c49502f8c50fbd8476"
+  version = "0.2.3"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/lvzhihao/go-rmqtool"
+  packages = ["."]
+  revision = "a6e5de1e5e1434900bc38adf10fb9a5d322a53ba"
 
 [[projects]]
   branch = "master"
   name = "github.com/lvzhihao/goutils"
   packages = ["."]
-  revision = "8313e398aa27a81ab19f43f31e1f3a1f6a8ea95e"
+  revision = "c702edeac67a3343a17c20152ad5904928f32363"
 
 [[projects]]
   branch = "master"
   name = "github.com/lvzhihao/uchatlib"
   packages = ["."]
-  revision = "489899b2a3a9f48f2e52b0d5edfed3d9afdbee8a"
+  revision = "981b1ee7bc8d3b56363099a5658d6104e496312b"
 
 [[projects]]
   name = "github.com/magiconair/properties"
@@ -70,32 +70,26 @@
 [[projects]]
   name = "github.com/mattn/go-isatty"
   packages = ["."]
-  revision = "fc9e8d8ef48496124e79ae0df75490096eccf6fe"
-  version = "v0.0.2"
+  revision = "0360b2af4f38e8d38c7fce2a9f4e702702d73a39"
+  version = "v0.0.3"
 
 [[projects]]
   branch = "master"
   name = "github.com/mitchellh/mapstructure"
   packages = ["."]
-  revision = "d0303fe809921458f417bcf828397a65db30a7e4"
-
-[[projects]]
-  name = "github.com/pelletier/go-buffruneio"
-  packages = ["."]
-  revision = "c37440a7cf42ac63b919c752ca73a85067e05992"
-  version = "v0.2.0"
+  revision = "06020f85339e21b2478f756a78e295255ffa4d6a"
 
 [[projects]]
   name = "github.com/pelletier/go-toml"
   packages = ["."]
-  revision = "5ccdfb18c776b740aecaf085c4d9a2779199c279"
-  version = "v1.0.0"
+  revision = "16398bac157da96aa88f98a2df640c7f32af1da2"
+  version = "v1.0.1"
 
 [[projects]]
-  branch = "master"
   name = "github.com/spf13/afero"
   packages = [".","mem"]
-  revision = "ee1bd8ee15a1306d1f9201acc41ef39cd9f99a1b"
+  revision = "8d919cbe7e2627e417f3e45c3c0e489a5b7e2536"
+  version = "v1.0.0"
 
 [[projects]]
   name = "github.com/spf13/cast"
@@ -104,10 +98,10 @@
   version = "v1.1.0"
 
 [[projects]]
-  branch = "master"
   name = "github.com/spf13/cobra"
   packages = ["."]
-  revision = "b78744579491c1ceeaaa3b40205e56b0591b93a3"
+  revision = "7b2c5ac9fc04fc5efafb60700713d4fa609b777b"
+  version = "v0.0.1"
 
 [[projects]]
   branch = "master"
@@ -131,7 +125,7 @@
   branch = "master"
   name = "github.com/streadway/amqp"
   packages = ["."]
-  revision = "2cbfe40c9341ad63ba23e53013b3ddc7989d801c"
+  revision = "ff34ec9cc65c2a23db5126d962c431018f65af59"
 
 [[projects]]
   name = "github.com/tylerb/graceful"
@@ -152,16 +146,10 @@
   revision = "dcecefd839c4193db0d35b88ec65b4c12d360ab0"
 
 [[projects]]
-  name = "github.com/vmihailenco/msgpack"
-  packages = [".","codes"]
-  revision = "de4b4857c10538d591bee30e8114176008f8b9d0"
-  version = "v3.1.2"
-
-[[projects]]
   name = "go.uber.org/atomic"
   packages = ["."]
-  revision = "4e336646b2ef9fc6e47be8e21594178f98e5ebcf"
-  version = "v1.2.0"
+  revision = "8474b86a5a6f79c443ce4b2992817ff32cf208b8"
+  version = "v1.3.1"
 
 [[projects]]
   name = "go.uber.org/multierr"
@@ -172,48 +160,36 @@
 [[projects]]
   name = "go.uber.org/zap"
   packages = [".","buffer","internal/bufferpool","internal/color","internal/exit","zapcore"]
-  revision = "3216c4c73e8ebbafff73c456dd27143f4a7c1f94"
-  version = "v1.6.0"
+  revision = "35aad584952c3e7020db7b839f6b102de6271f89"
+  version = "v1.7.1"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/crypto"
   packages = ["acme","acme/autocert"]
-  revision = "faadfbdc035307d901e69eea569f5dda451a3ee3"
-
-[[projects]]
-  branch = "master"
-  name = "golang.org/x/net"
-  packages = ["context"]
-  revision = "859d1a86bb617c0c20d154590c3c5d3fcb670b07"
+  revision = "94eea52f7b742c7cbe0b03b22f0c4c8631ece122"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/sys"
   packages = ["unix"]
-  revision = "062cd7e4e68206d8bab9b18396626e855c992658"
+  revision = "53aa286056ef226755cd898109dbcdaba8ac0b81"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/text"
   packages = ["internal/gen","internal/triegen","internal/ucd","transform","unicode/cldr","unicode/norm"]
-  revision = "acd49d43e9b95df46670431bf5c7ae59586daad8"
-
-[[projects]]
-  name = "google.golang.org/appengine"
-  packages = [".","datastore","internal","internal/app_identity","internal/base","internal/datastore","internal/log","internal/modules","internal/remote_api"]
-  revision = "150dc57a1b433e64154302bdc40b6bb8aefa313a"
-  version = "v1.0.0"
+  revision = "3b24cac7bc3a458991ab409aa2a339ac9e0d60d6"
 
 [[projects]]
   branch = "v2"
   name = "gopkg.in/yaml.v2"
   packages = ["."]
-  revision = "eb3733d160e74a9c7e442f435eb3bea458e1d19f"
+  revision = "287cf08546ab5e7e37d55a84f7ed3fd1db036de5"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "20235f675142e6ad5f8fd0427555b39abcf7e5c18311deee36146bf4bdc01127"
+  inputs-digest = "e91bdb2bac70852186eef58127cd3df0fee79f69d8e930e493a3561d8641ca22"
   solver-name = "gps-cdcl"
   solver-version = 1

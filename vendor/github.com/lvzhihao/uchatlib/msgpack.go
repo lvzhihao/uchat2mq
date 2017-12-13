@@ -4,11 +4,9 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"errors"
-	"os"
 	"time"
 
 	"github.com/lvzhihao/goutils"
-	"github.com/vmihailenco/msgpack"
 )
 
 type UchatMessage struct {
@@ -24,18 +22,6 @@ type UchatMessage struct {
 	ShareDesc        string
 	ShareUrl         string
 	ExtraData        interface{} //补充数据，并非接口返回
-}
-
-var UsedLocation *time.Location
-
-func init() {
-	UsedLocation, _ = time.LoadLocation("") //default UTC
-	if os.Getenv("TZ") != "" {
-		loc, err := time.LoadLocation(os.Getenv("TZ"))
-		if err != nil {
-			UsedLocation = loc
-		}
-	}
 }
 
 func ConvertUchatMessage(b []byte) ([]*UchatMessage, error) {
@@ -64,7 +50,7 @@ func ConvertUchatMessage(b []byte) ([]*UchatMessage, error) {
 		msg.LogSerialNo = goutils.ToString(v["vcSerialNo"])
 		msg.ChatRoomSerialNo = goutils.ToString(v["vcChatRoomSerialNo"])
 		msg.WxUserSerialNo = goutils.ToString(v["vcFromWxUserSerialNo"])
-		msg.MsgTime, _ = time.ParseInLocation("2006-01-02 15:04:05", goutils.ToString(v["dtMsgTime"]), UsedLocation)
+		msg.MsgTime, _ = time.ParseInLocation("2006-01-02 15:04:05", goutils.ToString(v["dtMsgTime"]), UchatTimeLocation)
 		msg.MsgType = goutils.ToInt32(v["nMsgType"])
 		content, err := base64.StdEncoding.DecodeString(goutils.ToString(v["vcContent"]))
 		if err != nil {
@@ -81,21 +67,40 @@ func ConvertUchatMessage(b []byte) ([]*UchatMessage, error) {
 	return ret, nil
 }
 
-/*
- 转换Uchat Message数据为Msgpack格式
-*/
-func ConvertUchatMessageToMsgpack(b []byte) ([][]byte, error) {
-	msgs, err := ConvertUchatMessage(b)
+// keyword msgpack
+type UchatKeyword struct {
+	LogSerialNo        string
+	ChatRoomSerialNo   string
+	FromWxUserSerialNo string
+	ToWxUserSerialNo   string
+	Content            string
+	ExtraData          interface{} //补充数据，并非接口返回
+}
+
+func ConvertUchatKeyword(b []byte) ([]*UchatKeyword, error) {
+	var rst map[string]interface{}
+	err := json.Unmarshal(b, &rst)
 	if err != nil {
 		return nil, err
 	}
-	ret := make([][]byte, 0)
-	for _, msg := range msgs {
-		b, err := msgpack.Marshal(msg)
-		if err != nil {
-			return nil, err
-		}
-		ret = append(ret, b)
+	data, ok := rst["Data"]
+	if !ok {
+		return nil, errors.New("empty Data")
+	}
+	var list []map[string]interface{}
+	err = json.Unmarshal([]byte(goutils.ToString(data)), &list)
+	if err != nil {
+		return nil, err
+	}
+	ret := make([]*UchatKeyword, 0)
+	for _, v := range list {
+		key := &UchatKeyword{}
+		key.LogSerialNo = goutils.ToString(v["vcSerialNo"])
+		key.ChatRoomSerialNo = goutils.ToString(v["vcChatRoomSerialNo"])
+		key.FromWxUserSerialNo = goutils.ToString(v["vcFromWxUserSerialNo"])
+		key.ToWxUserSerialNo = goutils.ToString(v["vcToWxUserSerialNo"])
+		key.Content = goutils.ToString(v["vcContent"])
+		ret = append(ret, key)
 	}
 	return ret, nil
 }
