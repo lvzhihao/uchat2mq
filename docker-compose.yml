@@ -7,12 +7,12 @@ services:
       - TZ=Asia/Shanghai
       - DEBUG=false
     volumes:
-      - ./.uchat2mq.yaml:/go/src/github.com/lvzhihao/uchat2mq/.uchat2mq.yaml
+      - ./.uchat2mq.yaml:/usr/local/uchat2mq/.uchat2mq.yaml
       - /etc/hosts:/etc/hosts
     command: >
       sh -c "ln -snf /usr/share/zoneinfo/$${TZ} /etc/localtime && 
       echo $${TZ} > /etc/timezone &&
-      go-wrapper run receive"
+      uchat2mq receive"
     expose:
       - 8800
     ports:
