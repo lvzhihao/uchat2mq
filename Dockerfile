@@ -7,4 +7,7 @@ FROM alpine:latest
 RUN apk --no-cache add ca-certificates tzdata
 WORKDIR /usr/local/uchat2mq
 COPY --from=builder /go/src/github.com/lvzhihao/uchat2mq/uchat2mq .
+COPY ./docker-entrypoint.sh  .
 ENV PATH /usr/local/uchat2mq:$PATH
+RUN chmod +x /usr/local/uchat2mq/docker-entrypoint.sh
+ENTRYPOINT ["/usr/local/uchat2mq/docker-entrypoint.sh"]

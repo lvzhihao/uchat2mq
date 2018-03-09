@@ -9,10 +9,7 @@ services:
     volumes:
       - ./.uchat2mq.yaml:/usr/local/uchat2mq/.uchat2mq.yaml
       - /etc/hosts:/etc/hosts
-    command: >
-      sh -c "ln -snf /usr/share/zoneinfo/$${TZ} /etc/localtime && 
-      echo $${TZ} > /etc/timezone &&
-      uchat2mq receive"
+    command: ["receive"]
     expose:
       - 8800
     ports:
