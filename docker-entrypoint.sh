@@ -10,8 +10,8 @@ ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && \
 echo $TZ > /etc/timezone 
 
 # k8s config  switch
-if [ -f "/usr/local/uchat2mq/config/uchat2mq.yaml.base64" ]; then
-    base64 -d /usr/local/uchat2mq/config/uchat2mq.yaml.base64 > /usr/local/uchat2mq/.uchat2mq.yaml
+if [ -f "/usr/local/uchat2mq/config/.uchat2mq.yaml" ]; then
+    ln -s  /usr/local/uchat2mq/config/.uchat2mq.yaml /usr/local/uchat2mq/.uchat2mq.yaml
 fi
 
 # apply config
