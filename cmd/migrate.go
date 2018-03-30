@@ -61,7 +61,7 @@ var migrateCmd = &cobra.Command{
 }
 
 func init() {
-	RootCmd.AddCommand(migrateCmd)
+	rootCmd.AddCommand(migrateCmd)
 
 	// Here you will define your flags and configuration settings.
 

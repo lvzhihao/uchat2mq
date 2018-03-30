@@ -14,10 +14,13 @@ if [ -f "/usr/local/uchat2mq/config/.uchat2mq.yaml" ]; then
     ln -s  /usr/local/uchat2mq/config/.uchat2mq.yaml /usr/local/uchat2mq/.uchat2mq.yaml
 fi
 
+# version
+/usr/local/uchat2mq/uchat2mq version
+
 # apply config
-echo "===start==="
+echo "===config start==="
 cat /usr/local/uchat2mq/.uchat2mq.yaml
-echo "====end===="
+echo "====config end===="
 
 # run command
 if [ ! -z "$1" ]; then

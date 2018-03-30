@@ -1,4 +1,4 @@
-// Copyright © 2017 edwin <edwin.lzh@gmail.com>
+// Copyright © 2018 edwin <edwin.lzh@gmail.com>
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -18,12 +18,42 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package main
+package cmd
 
 import (
-	"github.com/lvzhihao/uchat2mq/cmd"
+	"fmt"
+	"runtime"
+
+	"github.com/spf13/cobra"
 )
 
-func main() {
-	cmd.Execute()
+var (
+	BuildBranch      string
+	BuildVersion     string
+	BuildDate        string
+	CurrentGoVersion string = runtime.Version()
+)
+
+// versionCmd represents the version command
+var versionCmd = &cobra.Command{
+	Use:   "version",
+	Short: "version",
+	Long:  `version`,
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Printf("Version: %s@%s\nCompile: %s by go version %s\n", BuildBranch, BuildVersion, BuildDate, CurrentGoVersion)
+	},
+}
+
+func init() {
+	rootCmd.AddCommand(versionCmd)
+
+	// Here you will define your flags and configuration settings.
+
+	// Cobra supports Persistent Flags which will work for this command
+	// and all subcommands, e.g.:
+	// versionCmd.PersistentFlags().String("foo", "", "A help for foo")
+
+	// Cobra supports local flags which will only run when this command
+	// is called directly, e.g.:
+	// versionCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

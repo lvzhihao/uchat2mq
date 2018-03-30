@@ -105,7 +105,7 @@ var receiveCmd = &cobra.Command{
 }
 
 func init() {
-	RootCmd.AddCommand(receiveCmd)
+	rootCmd.AddCommand(receiveCmd)
 
 	// Here you will define your flags and configuration settings.
 
