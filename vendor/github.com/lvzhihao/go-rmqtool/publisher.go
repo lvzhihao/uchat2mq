@@ -26,10 +26,14 @@ func NewPublisherTool(url, exchange string, routeKeys []string) (*PublisherTool,
 }
 
 func (c *PublisherTool) conn(url, exchange string, routeKeys []string) error {
-	_, err := amqp.Dial(url)
+	//test link
+	testConn, err := amqp.Dial(url)
+	if testConn != nil {
+		go testConn.Close()
+	} //close test conn
 	if err != nil {
 		return err
-	} //test link
+	}
 	for _, route := range routeKeys {
 		c.channels[route] = &publishChannel{
 			amqpUrl:  url,
@@ -85,13 +89,16 @@ RetryConnect:
 	conn, err := amqp.Dial(c.amqpUrl)
 	if err != nil {
 		Log.Error("Channel Connection Error 1", c.routeKey, err)
+		if conn != nil {
+			go conn.Close()
+		}
 		time.Sleep(3 * time.Second)
 		goto RetryConnect
 	}
 	channel, err := conn.Channel()
 	if err != nil {
 		Log.Error("Channel Connection Error 2", c.routeKey, err)
-		conn.Close()
+		go conn.Close()
 		time.Sleep(3 * time.Second)
 		goto RetryConnect
 	}
@@ -112,14 +119,14 @@ BreakFor:
 			case string:
 				if msg.(string) == "quit" {
 					Log.Info("Channel Connection Quit", c.routeKey)
-					conn.Close()
+					go conn.Close()
 					return
 				} //quit
 			case amqp.Publishing:
 				err := channel.Publish(c.exchange, c.routeKey, false, false, msg.(amqp.Publishing))
 				if err != nil {
 					c.Channel <- msg
-					conn.Close()
+					go conn.Close()
 					Log.Error("Channel Connection Error 4", c.routeKey, err)
 					break BreakFor
 				}
@@ -127,7 +134,7 @@ BreakFor:
 				err := channel.Publish(c.exchange, msg.(*publishingExt).Key(c.routeKey), false, false, msg.(*publishingExt).Msg())
 				if err != nil {
 					c.Channel <- msg
-					conn.Close()
+					go conn.Close()
 					Log.Error("Channel Connection Error 4", c.routeKey, err)
 					break BreakFor
 				}

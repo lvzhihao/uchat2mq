@@ -38,7 +38,10 @@ func NewConsumerTool(url, queue string) (*ConsumerTool, error) {
 		queue:     queue,
 	}
 	// first test dial
-	_, err := amqp.Dial(url)
+	testConn, err := amqp.Dial(url)
+	if testConn != nil {
+		go testConn.Close()
+	} // close test conn
 	return c, err
 }
 
@@ -55,6 +58,9 @@ func (c *ConsumerTool) Link(prefetchCount int) (<-chan amqp.Delivery, error) {
 	var err error
 	c.conn, err = amqp.Dial(c.amqpUrl)
 	if err != nil {
+		if c.conn != nil {
+			c.conn.Close()
+		}
 		return nil, err
 	}
 	channel, err := c.conn.Channel()
