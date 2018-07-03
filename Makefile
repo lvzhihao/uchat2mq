@@ -44,3 +44,8 @@ docker-ali:
 	sudo docker tag edwinlll/uchat2mq:latest registry.cn-hangzhou.aliyuncs.com/weishangye/uchat2mq:latest
 	sudo docker push registry.cn-hangzhou.aliyuncs.com/weishangye/uchat2mq:latest
 	sudo docker rmi registry.cn-hangzhou.aliyuncs.com/weishangye/uchat2mq:latest
+
+docker-wdwd:
+	sudo docker tag edwinlll/uchat2mq:latest docker.wdwd.com/wxsq/uchat2mq:latest
+	sudo docker push docker.wdwd.com/wxsq/uchat2mq:latest
+	sudo docker rmi docker.wdwd.com/wxsq/uchat2mq:latest
